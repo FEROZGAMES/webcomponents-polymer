@@ -1,0 +1,84 @@
+  
+  <dom-module id="texyon-wcp">
+    <template>
+        <div is="dom-bind" id="content">
+        </div>
+    </template>
+  </dom-module>
+
+<script>
+    Polymer({
+        is: 'texyon-wcp',                   // tag name html for component
+        behaviors: [ Polymer.Templatizer ], // include for load templates
+
+        properties: {
+
+            model: {
+                type: Object,
+                notify: true,
+                observer: '_modelChanged'
+            },
+
+            templateSrc: {
+                type: String,
+                value: './templates/template_a.html',
+                observer: '_templateSrcChanged'
+            }
+
+        },    
+
+        // observer for model property
+        _modelChanged: function(newValue, oldValue) {
+            this.notifyPath('model', this.model);
+        },
+
+        // observer for templateSrc property
+        _templateSrcChanged: function(newValue) {
+            this._importTemplate(newValue);
+        },
+
+        // get template from url and create template into component
+        _importTemplate: function(templateSrc) {
+
+            var link = this.importHref(
+                templateSrc, 
+                function() {
+                    this._createTemplate(link.import.body);
+                }.bind(this),
+                function(){
+                    console.log("error");
+                }
+            );
+        },
+
+        // create template into component
+        _createTemplate: function(element) {
+
+            var template = document.createElement("template");
+            template.id = 'template';
+            template.content.appendChild(element);
+
+            this.templatize(template);
+
+            // bind models
+            var clone = this.stamp({
+                model: this.model,
+                nested: {
+                    model: this.model
+                }
+            });
+
+            // add template to DOM
+            Polymer.dom(this.$.content).appendChild(clone.root);
+        },
+
+        ready: function() {
+
+            // properties for bind into new templates
+            this._instanceProps = {
+                model: true
+            };
+
+        }
+    });
+</script>

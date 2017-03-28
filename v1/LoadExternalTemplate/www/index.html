@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+  <title>Load External Template - Web Component Sample</title>
+
+  <!-- Libraries -->
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+  <link rel="import" href="bower_components/polymer/polymer.html">
+
+  <!-- you can use a external url to load component -->
+  <link rel="import" href="../component/texyon/texyon-wcp.html">
+
+</head>
+<body>
+  <h1>prueba de componentes</h1>
+
+  <!-- template-src: you can use a external url to load component -->
+  <!-- model: model data sample -->
+  <texyon-wcp 
+    template-src="../component/texyon/templates/template_b.html" 
+    model='{ "name": "Neo", "age": "35" }'>
+  </texyon-wcp>
+
+</body>
+</html>
